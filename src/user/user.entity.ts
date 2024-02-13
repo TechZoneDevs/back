@@ -27,6 +27,9 @@ export class User{
     @Column()
     status: boolean
 
+    @Column()
+    idLocation: number
+
     @OneToMany(()=> Order, order=> order.user)
     userOrder: Order[]
 

@@ -35,6 +35,9 @@ export class Product{
     @Column()
     stock: number
 
+    @Column()
+    idLocation: number
+
     @OneToMany(()=> Location, location => location.locationProducto)
     location = Location
 
