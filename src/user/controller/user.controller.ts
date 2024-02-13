@@ -13,8 +13,8 @@ export class UserController {
     }
 
     @Post()
-    createUser(@Body() newProduct: CreateUserDto){
-        return this.userService.createUser(newProduct)
+    createUser(@Body() newUser: CreateUserDto){
+        return this.userService.createUser(newUser)
     }
 
     @Get(':id')

@@ -38,6 +38,9 @@ export class Product{
     @Column()
     idLocation: number
 
+    @Column()
+    idCategory: number
+
     @OneToMany(()=> Location, location => location.locationProducto)
     location = Location
 
