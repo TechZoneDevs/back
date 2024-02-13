@@ -3,9 +3,10 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Order } from '../order.entity';
 import { UserService } from 'src/user/service/user.service';
 import { ProductService } from 'src/product/service/product.service';
-import { DeepPartial } from 'typeorm';
+import { DeepPartial, Repository } from 'typeorm';
 import { Product } from 'src/product/product.entity';
 import { User } from 'src/user/user.entity';
+import { CreateOrderDto } from '../dto/create-order.dto';
 
 @Injectable()
 export class OrderService {
@@ -15,32 +16,44 @@ export class OrderService {
         private productService: ProductService,
     ) {}
 
-    async createUserCarrito(userCarritoDto: CreateUserCarritoDto) {
-        const userId = userCarritoDto.userId || userCarritoDto.user.id;
+    async createOrder(OrderDto: CreateOrderDto) {
+        const userId = OrderDto.userId || OrderDto.user.id;
         const userFound = await this.userService.findOne(userId);
 
         if (!(userFound instanceof User)) {
             throw new Error("Usuario no encontrado");
         }
 
-        const productIds = Array.isArray(userCarritoDto.productId) ? userCarritoDto.productId : [userCarritoDto.productId];
-        const productsFound = await Promise.all(productIds.map(async (productId) =>
-            await this.productService.(productId) 
-        ));
-
-        if (productsFound.some(product => !(product instanceof Product))) {
+        const productIds = Array.isArray(OrderDto.productId) ? OrderDto.productId : [OrderDto.productId];
+        const productsFound = await Promise.all(productIds.map(async (productId) => {
+            try {
+                const product = await this.productService.findOne(productId);
+                if (product instanceof Product) {
+                    return product;
+                } else {
+                    throw new Error("Producto no encontrado");
+                }
+            } catch (error) {
+                throw new Error(`Error al buscar el producto con ID ${productId}: ${error.message}`);
+            }
+        }));
+        
+        const validProductsFound = productsFound.filter(product => product instanceof Product);
+        
+        if (validProductsFound.length !== productIds.length) {
             throw new Error("Al menos uno de los productos no fue encontrado");
         }
-
-        const userCarritoPartial: DeepPartial<Order> = {
+        
+        const OrderPartial: DeepPartial<Order> = {
             user: userFound,
-            products: productsFound,
+            products: validProductsFound,
         };
+        
 
-        const createdUserCarrito = await this.OrderService.create(userCarritoPartial);
-        await this.OrderService.save(createdUserCarrito);
+        const createdOrder = await this.OrderService.create(OrderPartial);
+        await this.OrderService.save(createdOrder);
 
-        return createdUserCarrito;
+        return createdOrder;
     }
 
     async findByUserId(userId: number) {
