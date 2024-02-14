@@ -1,8 +1,9 @@
 import { Categoria } from "src/categoria/categoria.entity";
+import { ImgEntity } from "src/imgs/img.entity";
 import { Location } from "src/locations/location.entity";
 import { Order } from "src/order/order.entity";
 import { User } from "src/user/user.entity";
-import { Column, Entity, ManyToMany, OneToMany, OneToOne, PrimaryGeneratedColumn } from "typeorm";
+import { Column, Entity, ManyToMany, ManyToOne, OneToMany, OneToOne, PrimaryGeneratedColumn } from "typeorm";
 
 
 
@@ -17,8 +18,8 @@ export class Product{
     @Column()
     price: number
 
-    @Column()
-    imgs: string[]
+    @ManyToOne(()=> ImgEntity, img => img.productoImg)
+    imgs: ImgEntity[]
 
     @Column()
     vendedorId: number

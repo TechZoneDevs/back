@@ -12,7 +12,7 @@ export class CategoriaService {
     ){}
 
     async findAll(){
-        return this.categoryService.find()
+        return await this.categoryService.find()
     }
 
     async findOne(id: number){
