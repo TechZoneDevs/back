@@ -60,6 +60,10 @@ export class OrderService {
         return await this.OrderService.find({ relations: ['user', 'products'], where: { user: { id: userId } } });
     }
 
+    async findById(id: number){
+        return await this.OrderService.findOne({where: {id}})
+    }
+
     async findAll() {
         return await this.OrderService.find({ relations: ['user', 'products'] });
     }
