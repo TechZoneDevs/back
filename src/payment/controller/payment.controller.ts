@@ -1,4 +1,4 @@
-import {  Controller, Param, Post, Query, Res } from '@nestjs/common';
+import {  Controller, Get, Param, Post, Query, Res } from '@nestjs/common';
 import { PaymentService } from '../service/payment.service';
 import { Response as ExpressResponse } from 'express';
 import { Payment } from '../payment.entity';
@@ -17,5 +17,10 @@ export class PaymentController {
     const redirectionUrl = await this.paymentService.capturePayment(token);
     return res.redirect(redirectionUrl)
 }
-  
+  @Get('cancel')
+  async cancelOrder( @Res() res: ExpressResponse) {
+  const redirectionUrl = await this.paymentService.cancelPayment();
+  return res.redirect(redirectionUrl)
+}
+
 }

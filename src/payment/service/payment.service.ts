@@ -102,27 +102,8 @@ export class PaymentService {
         }
       };
 
-      async cancelPayment (token: string) {
-      
-        try {
-          const response = await axios.post(
-            `${process.env.PAYPAL_API}/v2/checkout/orders/${token}/capture`,
-            {},
-            {
-              auth: {
-                username: process.env.PAYPAL_API_CLIENT,
-                password: process.env.PAYPAL_API_SECRET,
-              },
-            }
-          );
-      
-          console.log(response.data);
-      
-          return "/payed.html"
-        } catch (error) {
-          console.log(error.message);
-          throw new InternalServerErrorException('Error al capturar la orden de PayPal');
-        }
+      async cancelPayment () {
+        return "/payed.html"
       };
 
 
