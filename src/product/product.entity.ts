@@ -1,4 +1,5 @@
 import { Categoria } from "src/categoria/categoria.entity";
+import { Comentario } from "src/comentarios/comentario.entity";
 import { ImgEntity } from "src/imgs/img.entity";
 import { Location } from "src/locations/location.entity";
 import { Order } from "src/order/order.entity";
@@ -41,6 +42,9 @@ export class Product{
 
     @Column()
     idCategory: number
+
+    @OneToMany(()=> Comentario, comentario => comentario.comentarioProducto)
+    comentarios: Comentario[]
 
     @OneToMany(()=> Location, location => location.locationProducto)
     location = Location

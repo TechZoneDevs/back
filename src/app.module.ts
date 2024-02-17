@@ -10,6 +10,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { PaymentModule } from './payment/payment.module';
 import { ImgsModule } from './imgs/imgs.module';
 import { ConfigModule } from '@nestjs/config'; 
+import { ComentariosModule } from './comentarios/comentarios.module';
 
 @Module({
   imports: [
@@ -34,7 +35,8 @@ import { ConfigModule } from '@nestjs/config';
     LocationsModule,
     OrderModule,
     PaymentModule,
-    ImgsModule
+    ImgsModule,
+    ComentariosModule
   ],
   controllers: [AppController],
   providers: [AppService],
