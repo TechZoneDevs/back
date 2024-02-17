@@ -12,7 +12,9 @@ export class LocationsService {
     ){}
 
     async findAll(){
-        return this.locationService.find()
+       const allLocations = await this.locationService.find()
+       if(!allLocations) return new HttpException('Locations no encontradas', HttpStatus.CONFLICT)
+       return allLocations
     }
 
     async findOne(id: number){

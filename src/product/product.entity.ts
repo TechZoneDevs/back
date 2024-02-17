@@ -19,14 +19,14 @@ export class Product{
     @Column()
     price: number
 
-    @ManyToOne(()=> ImgEntity, img => img.productoImg)
-    imgs: ImgEntity[]
-
     @Column()
     vendedorId: number
 
     @Column({nullable: true})
     marca: string
+
+    @Column({nullable: true})
+    descuento: number
 
     @Column()
     status: string
@@ -42,6 +42,9 @@ export class Product{
 
     @Column()
     idCategory: number
+
+    @ManyToOne(()=> ImgEntity, img => img.productoImg)
+    imgs: ImgEntity[]
 
     @OneToMany(()=> Comentario, comentario => comentario.comentarioProducto)
     comentarios: Comentario[]
