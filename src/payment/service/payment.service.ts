@@ -1,8 +1,9 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, InternalServerErrorException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Payment } from '../payment.entity';
 import { Repository } from 'typeorm';
 import { OrderService } from 'src/order/service/order.service';
+import { ConfigModule } from '@nestjs/config';
 import axios from 'axios';
 
 @Injectable()
@@ -35,8 +36,8 @@ export class PaymentService {
             brand_name: 'techZone',
             landing_page: 'NO_PREFERENCE',
             user_action: 'PAY_NOW',
-            // return_url: 'https://example.com/capture-order', esto cuando este el front lo avanzamos
-            // cancel_url: 'https://example.com/cancel-payment', 
+             return_url:  `http://localhost:3001/payment/capture`, //esto cuando este el front lo avanzamos
+            cancel_url: 'http://localhost:3001/cancel-payment', 
           },
         };
     
@@ -77,4 +78,53 @@ export class PaymentService {
           throw new Error('Error al generar el pago con PayPal');
         }
       }
+
+     async capturePayment (token: string) {
+      
+        try {
+          const response = await axios.post(
+            `${process.env.PAYPAL_API}/v2/checkout/orders/${token}/capture`,
+            {},
+            {
+              auth: {
+                username: process.env.PAYPAL_API_CLIENT,
+                password: process.env.PAYPAL_API_SECRET,
+              },
+            }
+          );
+      
+          console.log(response.data);
+      
+          return "/payed.html"
+        } catch (error) {
+          console.log(error.message);
+          throw new InternalServerErrorException('Error al capturar la orden de PayPal');
+        }
+      };
+
+      async cancelPayment (token: string) {
+      
+        try {
+          const response = await axios.post(
+            `${process.env.PAYPAL_API}/v2/checkout/orders/${token}/capture`,
+            {},
+            {
+              auth: {
+                username: process.env.PAYPAL_API_CLIENT,
+                password: process.env.PAYPAL_API_SECRET,
+              },
+            }
+          );
+      
+          console.log(response.data);
+      
+          return "/payed.html"
+        } catch (error) {
+          console.log(error.message);
+          throw new InternalServerErrorException('Error al capturar la orden de PayPal');
+        }
+      };
+
+
     }
+
