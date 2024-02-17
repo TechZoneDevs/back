@@ -22,7 +22,7 @@ export class ComentariosService {
         return ComentarioFound
     }
 
-    async findAllComentsUser(userId: number){
+    async findAllComentsUser(userId:number){
         return await this.comentarioService.find({where: {idUserComenta: userId}})
     }
 

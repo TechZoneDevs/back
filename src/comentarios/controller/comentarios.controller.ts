@@ -1,4 +1,4 @@
-import { Body, Controller, Delete, Get, Param, Patch, Post } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, Patch, Post, Query } from '@nestjs/common';
 import { ComentariosService } from '../service/comentarios.service';
 import { CreateComentarioDto } from '../dto/create-comentario.dto';
 import { UpdateComentarioDto } from '../dto/update-comentario.dto';
@@ -17,8 +17,8 @@ export class ComentariosController {
         return this.comentarioService.createComentario( +productId, comentario)
     }
 
-    @Get(':userId')
-    findAllComentarios(@Param('userId') userId: string){
+    @Get('search')
+    findAllComentarios(@Query('userId') userId: string){
         return this.comentarioService.findAllComentsUser(+userId)
     }
 
