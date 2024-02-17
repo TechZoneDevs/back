@@ -25,14 +25,22 @@ export class ProductService {
     async createProduct(newProduct: CreateProductDto){
         const productFound = await this.ProductService.findOne({where: {name: newProduct.name}})
         if(productFound)return new HttpException('Product ya existente', HttpStatus.CONFLICT)
-        const ProductCreated = await this.ProductService.create(newProduct)
+        const product = await this.ProductService.create(newProduct)
 
-        if(ProductCreated) return this.ProductService.save(ProductCreated)
+        if (newProduct.descuento && newProduct.descuento > 0 && newProduct.descuento < 100) {
+            product.price -= (product.price * (newProduct.descuento / 100));
+        }
+
+        if(product) return this.ProductService.save(product)
     }
 
     async updateProduct(id: number, ProductUpdate: UpdateProductDto){
         const productFound = await this.ProductService.findOne({where: {id}})
         if(!productFound) return new HttpException('Product no encontrado', HttpStatus.CONFLICT)
+        if (ProductUpdate.descuento && ProductUpdate.descuento > 0 && ProductUpdate.descuento < 100) {
+            ProductUpdate.price -= (ProductUpdate.price * (ProductUpdate.descuento / 100));
+        }
+
         return this.ProductService.update({id}, ProductUpdate)
     }
 

@@ -9,6 +9,7 @@ export class CreateProductDto{
     status: string
     description: string
     stock: number
+    descuento: number
     idLocation: number
     idCategory: number
 }

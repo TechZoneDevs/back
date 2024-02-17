@@ -11,4 +11,5 @@ export class UpdateProductDto{
     stock: number
     idLocation: number
     idCategory: number
+    descuento: number
 }
