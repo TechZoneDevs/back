@@ -1,15 +1,14 @@
 import { ImgEntity } from "src/imgs/img.entity"
+import { User } from "src/user/user.entity"
 
 export class CreateProductDto{
     name: string
     price: number
     imgs: ImgEntity[]
-    vendedorId: number
-    marca: string
+    marca: string | null
     status: string
     description: string
     stock: number
-    descuento: number
-    idLocation: number
-    idCategory: number
+    vendedor: User[]
+    descuento: number | null
 }
