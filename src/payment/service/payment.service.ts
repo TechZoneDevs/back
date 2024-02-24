@@ -3,8 +3,8 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Payment } from '../payment.entity';
 import { Repository } from 'typeorm';
 import { OrderService } from 'src/order/service/order.service';
-import { ConfigModule } from '@nestjs/config';
 import axios from 'axios';
+import { Order } from 'src/order/order.entity';
 
 @Injectable()
 export class PaymentService {
@@ -13,30 +13,35 @@ export class PaymentService {
         private orederService: OrderService
     ){}
 
-    async createPayment(orderId: number): Promise<any> {
-        const order = await this.orederService.findById(orderId)
-        const purchaseUnits = order.products.map(product => ({
-          description: product.name, 
-          amount: {
-            currency_code: 'USD',
-            value: product.price.toFixed(2), 
-          },
-          quantity: 1, 
-        }));
-    
-        const totalPrice = order.products.reduce(
-          (total, product) => total + product.price,
-          0,
-        );
+    async createPayment() {
     
         const paymentData = {
           intent: 'CAPTURE',
-          purchase_units: purchaseUnits,
+          purchase_units: [
+            {
+                amount: {
+                    currency_code: "USD",
+                    value: "1.00",
+                },
+                shipping: {
+                    name: {
+                        full_name: "Juan Pérez",
+                    },
+                    address: {
+                        address_line_1: "Av. Principal 123",
+                        admin_area_2: "Ciudad Autónoma de Buenos Aires",
+                        admin_area_1: "CABA",
+                        postal_code: "C1234ABC", // Código postal válido para Argentina
+                        country_code: "AR",
+                    },
+                },
+            },
+        ],
           application_context: {
             brand_name: 'techZone',
             landing_page: 'NO_PREFERENCE',
             user_action: 'PAY_NOW',
-             return_url:  `http://localhost:3001/payment/capture`, //esto cuando este el front lo avanzamos
+            return_url:  `http://localhost:3001/payment/capture`, //esto cuando este el front lo avanzamos
             cancel_url: 'http://localhost:3001/cancel-payment', 
           },
         };
@@ -66,16 +71,13 @@ export class PaymentService {
               },
             },
           );
-    
-          const payment = new Payment();
-          payment.payment = order;
-          payment.orderId = response.data.id;
-          payment.amount = totalPrice;
-          await this.paymentService.save(payment);
+            
+
+
     
           return response.data;
         } catch (error) {
-          throw new Error('Error al generar el pago con PayPal');
+          throw new Error('Error al generar el pago con PayPal' + error.message);
         }
       }
 
@@ -93,8 +95,14 @@ export class PaymentService {
             }
           );
       
-          console.log(response.data);
-      
+          console.log("Status : ",response.data.status,"Productos : ",response.data.links);
+          if(response.data.status === "COMPLETED"){
+            const payment = new Payment();
+            payment.payment = new Order;
+            payment.orderId = response.data.id;
+            payment.amount = 10;
+            await this.paymentService.save(payment);
+          }
           return "/payed.html"
         } catch (error) {
           console.log(error.message);

@@ -14,6 +14,6 @@ export class Payment{
     @Column()
     amount: number
 
-    @OneToOne(()=> Order, order => order.pago)
+    @OneToOne(()=> Order, order => order.status)
     payment: Order
 }

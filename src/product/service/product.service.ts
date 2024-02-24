@@ -5,6 +5,7 @@ import { DeepPartial, Repository } from 'typeorm';
 import { CreateProductDto } from '../dto/create-product.dto';
 import { UpdateProductDto } from '../dto/update-product.dto';
 import { User } from 'src/user/user.entity';
+import { UUID } from 'crypto';
 
 @Injectable()
 export class ProductService {
@@ -19,7 +20,7 @@ export class ProductService {
       });
 
     }
-    async findOne(id: number){
+    async findOne(id: UUID){
       const productFound = await this.ProductService.findOne({where: {id}})
       if(!productFound) return new HttpException('Product no encontrado', HttpStatus.CONFLICT)
 
@@ -72,7 +73,7 @@ export class ProductService {
 
     
 
-    async updateProduct(id: number, ProductUpdate: UpdateProductDto){
+    async updateProduct(id: UUID, ProductUpdate: UpdateProductDto){
         const productFound = await this.ProductService.findOne({where: {id}})
         if(!productFound) return new HttpException('Product no encontrado', HttpStatus.CONFLICT)
         if (ProductUpdate.descuento && ProductUpdate.descuento > 0 && ProductUpdate.descuento < 100) {
@@ -82,7 +83,7 @@ export class ProductService {
         return this.ProductService.update({id}, ProductUpdate)
     }
 
-    async deleteProduct(id: number){
+    async deleteProduct(id: UUID){
         const deletedProduct = await this.ProductService.delete({id})
         if(deletedProduct.affected === 0) return  new HttpException('Product no eliminado', HttpStatus.CONFLICT)
         return deletedProduct

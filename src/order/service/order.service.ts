@@ -17,17 +17,19 @@ export class OrderService {
     ) {}
 
     async createOrder(OrderDto: CreateOrderDto) {
-        const userId = OrderDto.userId || OrderDto.user.id;
+        const userId = OrderDto.userId;
         const userFound = await this.userService.findOne(userId);
 
         if (!(userFound instanceof User)) {
             throw new Error("Usuario no encontrado");
         }
 
-        const productIds = Array.isArray(OrderDto.productId) ? OrderDto.productId : [OrderDto.productId];
+        const productIds = Array.isArray(OrderDto.product) ? OrderDto.product : [OrderDto.product];
         const productsFound = await Promise.all(productIds.map(async (productId) => {
             try {
+
                 const product = await this.productService.findOne(productId);
+                
                 if (product instanceof Product) {
                     return product;
                 } else {
@@ -39,7 +41,7 @@ export class OrderService {
         }));
         
         const validProductsFound = productsFound.filter(product => product instanceof Product);
-        
+
         if (validProductsFound.length !== productIds.length) {
             throw new Error("Al menos uno de los productos no fue encontrado");
         }
@@ -51,6 +53,7 @@ export class OrderService {
         
 
         const createdOrder = await this.OrderService.create(OrderPartial);
+        console.log(createdOrder);
         await this.OrderService.save(createdOrder);
 
         return createdOrder;

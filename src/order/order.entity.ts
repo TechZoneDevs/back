@@ -1,7 +1,6 @@
-import { Payment } from "src/payment/payment.entity";
 import { Product } from "src/product/product.entity";
 import { User } from "src/user/user.entity";
-import { Column, Entity, ManyToMany, ManyToOne, OneToOne, PrimaryGeneratedColumn } from "typeorm";
+import { Column, Entity, JoinColumn, ManyToMany, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
 
 
 @Entity()
@@ -12,13 +11,13 @@ export class Order{
     @Column({ type: 'datetime', default: () => 'CURRENT_TIMESTAMP' })
     createdAd: Date;
 
-    @OneToOne(()=>Payment, payment => payment.payment)
-    pago: Payment
+    @Column({default:"NOT_PAYED"})
+    status: string;
 
-    @ManyToOne(()=> User, user => user.userOrder)
-    user: User
+    @ManyToOne(()=> User, user => user.id)
+    user: User;
 
-    @ManyToMany(()=> Product, product => product.productsOrder)
-    //capaz tenemos que agregar un @JoinColumn
-    products: Product[]
+    @ManyToMany(() => Product, product => product.productsOrder)
+    products: Product[];
+    
 }

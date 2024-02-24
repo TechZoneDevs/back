@@ -2,6 +2,7 @@ import { Body, Controller, Delete, Get, Param, Patch, Post } from '@nestjs/commo
 import { ProductService } from '../service/product.service';
 import { CreateProductDto } from '../dto/create-product.dto';
 import { UpdateProductDto } from '../dto/update-product.dto';
+import { UUID } from 'crypto';
 
 @Controller('product')
 export class ProductController {
@@ -18,17 +19,17 @@ export class ProductController {
     }
 
     @Get(':id')
-    findProduct(@Param('id') id:string){
-        return this.productService.findOne(+id)
+    findProduct(@Param('id') id:UUID){
+        return this.productService.findOne(id)
     }
 
     @Delete(':id')
-    deletedProduct(@Param('id') id:string){
-        return this.productService.deleteProduct(+id)
+    deletedProduct(@Param('id') id:UUID){
+        return this.productService.deleteProduct(id)
     }
 
     @Patch(':id')
-    updateProduct(@Param('id') id: string, @Body() update: UpdateProductDto){
-        return this.productService.updateProduct(+id, update)
+    updateProduct(@Param('id') id: UUID, @Body() update: UpdateProductDto){
+        return this.productService.updateProduct(id, update)
     }
 }

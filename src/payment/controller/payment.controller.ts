@@ -7,12 +7,12 @@ import { Payment } from '../payment.entity';
 export class PaymentController {
     constructor(private readonly paymentService: PaymentService) {}
 
-  @Post(':orderId/create')
-  async createPayment(@Param('orderId') orderId: string): Promise<Payment> {
-    return await this.paymentService.createPayment(+orderId);
+  @Post('create')
+  async createPayment(): Promise<Payment> {
+    return await this.paymentService.createPayment();
   }
 
-  @Post('capture')
+  @Get('capture')
   async captureOrder(@Query('token') token: string, @Res() res: ExpressResponse) {
     const redirectionUrl = await this.paymentService.capturePayment(token);
     return res.redirect(redirectionUrl)

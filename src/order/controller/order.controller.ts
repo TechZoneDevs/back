@@ -1,6 +1,7 @@
 import { Body, Controller, Get, Param, Post } from '@nestjs/common';
 import { OrderService } from '../service/order.service';
 import { CreateOrderDto } from '../dto/create-order.dto';
+import { UUID } from 'crypto';
 
 @Controller('order')
 export class OrderController {
@@ -22,7 +23,7 @@ export class OrderController {
     }
 
     @Get(':id')
-    getOrderById(@Param('id') id:string){
+    getOrderById(@Param('id') id:UUID){
         return this.OrderService.findById(+id)
     }
 }

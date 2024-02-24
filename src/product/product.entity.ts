@@ -1,3 +1,4 @@
+import { UUID } from "crypto";
 import { Categoria } from "src/categoria/categoria.entity";
 import { Comentario } from "src/comentarios/comentario.entity";
 import { ImgEntity } from "src/imgs/img.entity";
@@ -10,8 +11,8 @@ import { Column, Entity, JoinTable, ManyToMany, ManyToOne, OneToMany, PrimaryGen
 
 @Entity()
 export class Product{
-    @PrimaryGeneratedColumn()
-    id: number
+    @PrimaryGeneratedColumn("uuid")
+    id: UUID
 
     @Column()
     name: string
@@ -56,6 +57,11 @@ export class Product{
     
 
     @ManyToMany(()=> Order, order => order.products)
+    @JoinTable({
+        name: "product_order",
+        joinColumn: { name: "product_id", referencedColumnName: "id" },
+        inverseJoinColumn: { name: "order_id", referencedColumnName: "id" },
+    })
     productsOrder: Order[]
 
     @Column({ type: 'datetime', default: () => 'CURRENT_TIMESTAMP' })
