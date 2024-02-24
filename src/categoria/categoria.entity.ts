@@ -11,6 +11,9 @@ export class Categoria{
     @Column()
     name: string
 
+    @Column()
+    img: string
+
     @ManyToOne(()=> Product, product => product.categoria)
     productos: Product[]
 
