@@ -71,7 +71,9 @@ export class ProductService {
       }
     }
 
-    
+    async getProductsByCategoryId(id: number){
+        return this.ProductService.find({where: { categoria: {id}}});
+    }
 
     async updateProduct(id: UUID, ProductUpdate: UpdateProductDto){
         const productFound = await this.ProductService.findOne({where: {id}})

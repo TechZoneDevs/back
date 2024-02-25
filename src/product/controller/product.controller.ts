@@ -23,6 +23,11 @@ export class ProductController {
         return this.productService.findOne(id)
     }
 
+    @Get('/category/:id')
+    findProductsByCategory(@Param('id') id:number){
+        return this.productService.getProductsByCategoryId(+id)
+    }
+
     @Delete(':id')
     deletedProduct(@Param('id') id:UUID){
         return this.productService.deleteProduct(id)
