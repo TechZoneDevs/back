@@ -2,14 +2,15 @@ import {  Controller, Get, Param, Post, Query, Res } from '@nestjs/common';
 import { PaymentService } from '../service/payment.service';
 import { Response as ExpressResponse } from 'express';
 import { Payment } from '../payment.entity';
+import { UUID } from 'crypto';
 
 @Controller('payment')
 export class PaymentController {
     constructor(private readonly paymentService: PaymentService) {}
 
-  @Post('create')
-  async createPayment(): Promise<Payment> {
-    return await this.paymentService.createPayment();
+  @Post('create/:id')
+  async createPayment(@Param("id") id:UUID): Promise<Payment> {
+    return await this.paymentService.createPayment(id);
   }
 
   @Get('capture')

@@ -7,6 +7,8 @@ import { DeepPartial, Repository } from 'typeorm';
 import { Product } from 'src/product/product.entity';
 import { User } from 'src/user/user.entity';
 import { CreateOrderDto } from '../dto/create-order.dto';
+import { UUID } from 'crypto';
+import { updateOrderDto } from '../dto/update-order.dto';
 
 @Injectable()
 export class OrderService {
@@ -53,7 +55,6 @@ export class OrderService {
         
 
         const createdOrder = await this.OrderService.create(OrderPartial);
-        console.log(createdOrder);
         await this.OrderService.save(createdOrder);
 
         return createdOrder;
@@ -63,11 +64,25 @@ export class OrderService {
         return await this.OrderService.find({ relations: ['user', 'products'], where: { user: { id: userId } } });
     }
 
-    async findById(id: number){
-        return await this.OrderService.findOne({where: {id}})
+    async findById(id: UUID){
+        return await this.OrderService.findOne({where: {id},relations:['user', 'products']})
     }
 
     async findAll() {
         return await this.OrderService.find({ relations: ['user', 'products'] });
+    }
+
+    async updateOrder(order:updateOrderDto){
+        return await this.OrderService.update(order.id,order.orderContent);
+    }
+
+    //actualizar estado de la compra cuando se efectua la compra
+
+    async updateOrderStatus(paymentId:string){
+        const order = await this.OrderService.findOne({where:{
+            paymentId
+        }})
+
+        return await this.OrderService.update(order.id,{status:"PAYED"})
     }
 }

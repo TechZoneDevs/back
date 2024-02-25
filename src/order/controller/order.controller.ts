@@ -12,7 +12,7 @@ export class OrderController {
         return this.OrderService.createOrder(userCarrito)
     }
 
-    @Get(':userId')
+    @Get('user/:userId')
     getUserCarrito(@Param('userId') userId: string){
         return this.OrderService.findByUserId(+userId)
     }
@@ -24,6 +24,6 @@ export class OrderController {
 
     @Get(':id')
     getOrderById(@Param('id') id:UUID){
-        return this.OrderService.findById(+id)
+        return this.OrderService.findById(id)
     }
 }

@@ -5,6 +5,7 @@ import { Repository } from 'typeorm';
 import { OrderService } from 'src/order/service/order.service';
 import axios from 'axios';
 import { Order } from 'src/order/order.entity';
+import { UUID } from 'crypto';
 
 @Injectable()
 export class PaymentService {
@@ -13,30 +14,39 @@ export class PaymentService {
         private orederService: OrderService
     ){}
 
-    async createPayment() {
+    async createPayment(id:UUID) {
     
+        const order = await this.orederService.findById(id);
+
+        if(order && !order.products.length){
+          throw Error("No tiene ningun producto asignado esta orden")
+        }
+
         const paymentData = {
           intent: 'CAPTURE',
-          purchase_units: [
-            {
+          purchase_units: order.products.map((product) => {
+
+            return {
+              reference_id: order.id,
                 amount: {
                     currency_code: "USD",
-                    value: "1.00",
+                    value: product.price,
                 },
                 shipping: {
                     name: {
-                        full_name: "Juan Pérez",
+                        full_name: order.user.name,
                     },
                     address: {
                         address_line_1: "Av. Principal 123",
                         admin_area_2: "Ciudad Autónoma de Buenos Aires",
                         admin_area_1: "CABA",
-                        postal_code: "C1234ABC", // Código postal válido para Argentina
+                        postal_code: "C1234ABC",
                         country_code: "AR",
                     },
                 },
-            },
-        ],
+            }
+
+          }),
           application_context: {
             brand_name: 'techZone',
             landing_page: 'NO_PREFERENCE',
@@ -70,11 +80,14 @@ export class PaymentService {
                 'Authorization': `Bearer ${access_token}`,
               },
             },
-          );
-            
+          );      
+          
+          order.paymentId = response.data.id;
 
+          await this.orederService.updateOrder({id:order.id,orderContent:{
+            paymentId:order.paymentId
+          }})
 
-    
           return response.data;
         } catch (error) {
           throw new Error('Error al generar el pago con PayPal' + error.message);
@@ -94,14 +107,9 @@ export class PaymentService {
               },
             }
           );
-      
-          console.log("Status : ",response.data.status,"Productos : ",response.data.links);
+          
           if(response.data.status === "COMPLETED"){
-            const payment = new Payment();
-            payment.payment = new Order;
-            payment.orderId = response.data.id;
-            payment.amount = 10;
-            await this.paymentService.save(payment);
+            this.orederService.updateOrderStatus(response.data.id)
           }
           return "/payed.html"
         } catch (error) {
