@@ -7,6 +7,8 @@ import { DeepPartial, Repository } from 'typeorm';
 import { Product } from 'src/product/product.entity';
 import { User } from 'src/user/user.entity';
 import { CreateOrderDto } from '../dto/create-order.dto';
+import { UUID } from 'crypto';
+import { updateOrderDto } from '../dto/update-order.dto';
 
 @Injectable()
 export class OrderService {
@@ -17,17 +19,19 @@ export class OrderService {
     ) {}
 
     async createOrder(OrderDto: CreateOrderDto) {
-        const userId = OrderDto.userId || OrderDto.user.id;
+        const userId = OrderDto.userId;
         const userFound = await this.userService.findOne(userId);
 
         if (!(userFound instanceof User)) {
             throw new Error("Usuario no encontrado");
         }
 
-        const productIds = Array.isArray(OrderDto.productId) ? OrderDto.productId : [OrderDto.productId];
+        const productIds = Array.isArray(OrderDto.product) ? OrderDto.product : [OrderDto.product];
         const productsFound = await Promise.all(productIds.map(async (productId) => {
             try {
+
                 const product = await this.productService.findOne(productId);
+                
                 if (product instanceof Product) {
                     return product;
                 } else {
@@ -39,7 +43,7 @@ export class OrderService {
         }));
         
         const validProductsFound = productsFound.filter(product => product instanceof Product);
-        
+
         if (validProductsFound.length !== productIds.length) {
             throw new Error("Al menos uno de los productos no fue encontrado");
         }
@@ -60,11 +64,25 @@ export class OrderService {
         return await this.OrderService.find({ relations: ['user', 'products'], where: { user: { id: userId } } });
     }
 
-    async findById(id: number){
-        return await this.OrderService.findOne({where: {id}})
+    async findById(id: UUID){
+        return await this.OrderService.findOne({where: {id},relations:['user', 'products']})
     }
 
     async findAll() {
         return await this.OrderService.find({ relations: ['user', 'products'] });
+    }
+
+    async updateOrder(order:updateOrderDto){
+        return await this.OrderService.update(order.id,order.orderContent);
+    }
+
+    //actualizar estado de la compra cuando se efectua la compra
+
+    async updateOrderStatus(paymentId:string){
+        const order = await this.OrderService.findOne({where:{
+            paymentId
+        }})
+
+        return await this.OrderService.update(order.id,{status:"PAYED"})
     }
 }

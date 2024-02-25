@@ -4,6 +4,7 @@ import { Repository } from 'typeorm';
 import { Comentario } from '../comentario.entity';
 import { UpdateComentarioDto } from '../dto/update-comentario.dto';
 import { CreateComentarioDto } from '../dto/create-comentario.dto';
+import { UUID } from 'crypto';
 
 @Injectable()
 export class ComentariosService {
@@ -26,7 +27,7 @@ export class ComentariosService {
         return await this.comentarioService.find({where: {idUserComenta: userId}})
     }
 
-    async createComentario(productId: number, newComentario: CreateComentarioDto){
+    async createComentario(productId: UUID, newComentario: CreateComentarioDto){
         const comentario = this.comentarioService.create({
             ...newComentario,
             comentarioProducto: { id: productId }

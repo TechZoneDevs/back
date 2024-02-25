@@ -1,3 +1,3 @@
 export class UpdateImgDto{
-    img: string
+    imgURL: string
 }

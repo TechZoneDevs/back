@@ -1,5 +1,4 @@
-import { Product } from "src/product/product.entity";
-import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from "typeorm";
+import { Column, Entity, PrimaryGeneratedColumn } from "typeorm";
 
 
 @Entity()
@@ -8,11 +7,5 @@ export class ImgEntity{
    id: number
 
    @Column()
-   img: string
-
-   @Column()
-   productId: number
-
-   @OneToMany(()=> Product, product => product.imgs)
-   productoImg: Product
+   imgURL: string
 }

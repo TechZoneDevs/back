@@ -1,7 +1,7 @@
 import { Location } from "src/locations/location.entity";
 import { Order } from "src/order/order.entity";
 import { Product } from "src/product/product.entity";
-import { Column, Entity, ManyToOne, OneToMany, PrimaryGeneratedColumn } from "typeorm";
+import { Column, Entity, ManyToMany, ManyToOne, OneToMany, PrimaryGeneratedColumn } from "typeorm";
 
 
 @Entity()
@@ -33,8 +33,9 @@ export class User{
     @OneToMany(()=> Order, order=> order.user)
     userOrder: Order[]
 
-    @ManyToOne(()=> Product, product => product.vendedor)
-    publicaciones: Product[]
+    @ManyToMany(()=> Product, product => product.vendedor)
+    publicaciones: Product[];
+    
 
     @OneToMany(()=> Location, location => location.locationUser)
     location: Location
