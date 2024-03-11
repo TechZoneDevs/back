@@ -18,7 +18,7 @@ export class UserService {
     async findOne(id: number){
         const userFound = await this.userService.findOne({where: {id}})
         if(!userFound) return new HttpException('user no encontrado', HttpStatus.CONFLICT)
-
+        
         return userFound
     }
 

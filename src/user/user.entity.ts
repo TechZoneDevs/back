@@ -15,7 +15,7 @@ export class User{
     @Column()
     email: string
 
-    @Column()
+    @Column({nullable: true})
     password: string
 
     @Column()
@@ -27,8 +27,11 @@ export class User{
     @Column()
     status: boolean
 
-    @Column()
+    @Column({nullable: true})
     idLocation: number
+
+    @Column({nullable: true})
+    role:string
 
     @OneToMany(()=> Order, order=> order.user)
     userOrder: Order[]
