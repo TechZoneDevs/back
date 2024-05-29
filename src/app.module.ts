@@ -14,7 +14,7 @@ import { PaymentModule } from './payment/payment.module';
     TypeOrmModule.forRoot({
       type: 'mysql',
       host: 'localhost',
-      password: 'mailo1',
+      password: 'Arkantro99!',
       port: 3306,
       username: 'root',
       database: 'techzone',

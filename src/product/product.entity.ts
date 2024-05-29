@@ -18,7 +18,7 @@ export class Product{
     price: number
 
     @Column()
-    imgs: string[]
+    imgs: string
 
     @Column()
     vendedorId: number

@@ -1,7 +1,7 @@
 export class UpdateProductDto{
     name: string
     price: number
-    imgs: string[]
+    imgs: string
     vendedorId: number
     marca: string
     status: string
