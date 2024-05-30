@@ -1,5 +1,5 @@
 import { Order } from "src/order/order.entity";
-import { Entity, OneToOne, PrimaryGeneratedColumn } from "typeorm";
+import { Column, Entity, OneToOne, PrimaryGeneratedColumn } from "typeorm";
 
 
 
@@ -7,6 +7,12 @@ import { Entity, OneToOne, PrimaryGeneratedColumn } from "typeorm";
 export class Payment{
     @PrimaryGeneratedColumn()
     id: number
+
+    @Column()
+    orderId: number
+
+    @Column()
+    amount: number
 
     @OneToOne(()=> Order, order => order.pago)
     payment: Order

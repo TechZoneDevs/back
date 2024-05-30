@@ -1,8 +1,10 @@
 import { Categoria } from "src/categoria/categoria.entity";
+import { Comentario } from "src/comentarios/comentario.entity";
+import { ImgEntity } from "src/imgs/img.entity";
 import { Location } from "src/locations/location.entity";
 import { Order } from "src/order/order.entity";
 import { User } from "src/user/user.entity";
-import { Column, Entity, ManyToMany, OneToMany, OneToOne, PrimaryGeneratedColumn } from "typeorm";
+import { Column, Entity, ManyToMany, ManyToOne, OneToMany, OneToOne, PrimaryGeneratedColumn } from "typeorm";
 
 
 
@@ -18,13 +20,19 @@ export class Product{
     price: number
 
     @Column()
+<<<<<<< HEAD
     imgs: string
 
     @Column()
+=======
+>>>>>>> d75b9167e29835a93dd448b451f8f10eea7caf68
     vendedorId: number
 
     @Column({nullable: true})
     marca: string
+
+    @Column({nullable: true})
+    descuento: number
 
     @Column()
     status: string
@@ -40,6 +48,12 @@ export class Product{
 
     @Column()
     idCategory: number
+
+    @ManyToOne(()=> ImgEntity, img => img.productoImg)
+    imgs: ImgEntity[]
+
+    @OneToMany(()=> Comentario, comentario => comentario.comentarioProducto)
+    comentarios: Comentario[]
 
     @OneToMany(()=> Location, location => location.locationProducto)
     location = Location

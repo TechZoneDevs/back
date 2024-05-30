@@ -20,4 +20,9 @@ export class OrderController {
     getAllUserCarrito(){
         return this.OrderService.findAll()
     }
+
+    @Get(':id')
+    getOrderById(@Param('id') id:string){
+        return this.OrderService.findById(+id)
+    }
 }

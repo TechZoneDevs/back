@@ -3,7 +3,7 @@ import { CategoriaService } from '../service/categoria.service';
 import { CreateCategoryDto } from '../dto/create-category.dto';
 import { UpdateCategoryDto } from '../dto/update-category.dto';
 
-@Controller('categoria')
+@Controller('category')
 export class CategoriaController {
     constructor(private CategoryService: CategoriaService){}
 
@@ -18,7 +18,7 @@ export class CategoriaController {
     }
 
     @Get(':id')
-    findUser(@Param('id') id:string){
+    findCategory(@Param('id') id:string){
         return this.CategoryService.findOne(+id)
     }
 

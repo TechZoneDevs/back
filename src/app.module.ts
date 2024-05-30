@@ -23,7 +23,13 @@ import { PaymentModule } from './payment/payment.module';
       connectTimeout: 30000,
       logging: true
     }),
-    UserModule, ProductModule, CategoriaModule, LocationsModule, OrderModule, PaymentModule],
+    UserModule,
+    ProductModule,
+    CategoriaModule,
+    LocationsModule,
+    OrderModule,
+    PaymentModule
+  ],
   controllers: [AppController],
   providers: [AppService],
 })
