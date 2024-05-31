@@ -14,7 +14,7 @@ export class User {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @Column()
+  @Column( { nullable: true } )
   name: string;
 
   @Column()
@@ -23,16 +23,16 @@ export class User {
   @Column()
   password: string;
 
-  @Column()
+  @Column( { nullable: true } )
   imgAvatar: string;
 
-  @Column({ nullable: true })
+  @Column( { nullable: true } )
   biografia: string;
 
-  @Column()
+  @Column( { nullable: true })
   status: boolean;
 
-  @Column()
+  @Column( { nullable: true })
   idLocation: number;
 
   @OneToMany(() => Order, (order) => order.user)

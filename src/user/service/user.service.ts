@@ -23,7 +23,7 @@ export class UserService {
 
   async createUser(newUser: CreateUserDto) {
     const userFound = await this.userService.findOne({
-      where: { name: newUser.name },
+      where: { name: newUser.email },
     });
     if (userFound)
       return new HttpException('user ya existente', HttpStatus.CONFLICT);
