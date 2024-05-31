@@ -23,11 +23,8 @@ export class Product {
   @Column()
   price: number;
 
-  @Column()
+  @Column( { nullable: true } )
   imgs: string;
-
-  @Column()
-  vendedorId: number;
 
   @Column({ nullable: true })
   marca: string;
@@ -35,17 +32,14 @@ export class Product {
   @Column({ nullable: true })
   descuento: number;
 
-  @Column()
+  @Column( { nullable: true } )
   status: string;
 
-  @Column()
+  @Column( { nullable: true } )
   description: string;
 
-  @Column()
+  @Column( { nullable: true } )
   stock: number;
-
-  @Column()
-  idLocation: number;
 
   @ManyToMany( () => Category, (category) => category.products)
   categorias: Category[];

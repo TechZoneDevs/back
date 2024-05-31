@@ -28,7 +28,7 @@ export class ProductService {
       where: { name: newProduct.name },
     });
     if (productFound)
-      return new HttpException('Product ya existente', HttpStatus.CONFLICT);
+      return new HttpException('Ya existe un producto con ese nombre.', HttpStatus.CONFLICT);
     const product = await this.ProductService.create(newProduct);
 
     if (
