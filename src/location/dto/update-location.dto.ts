@@ -1,4 +1,4 @@
 export class UpdateLocationDto {
-  city: string;
-  localidad: string;
+  city?: string;
+  localidad?: string;
 }

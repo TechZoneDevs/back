@@ -9,6 +9,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { PaymentModule } from './payment/payment.module';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { PORT } from './main';
+import { CategoryModule } from './category/category.module';
 
 @Module({
   imports: [
@@ -36,6 +37,7 @@ import { PORT } from './main';
     LocationModule,
     OrderModule,
     PaymentModule,
+    CategoryModule,
   ],
   controllers: [AppController],
   providers: [AppService],

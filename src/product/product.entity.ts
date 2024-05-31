@@ -1,3 +1,4 @@
+import { Category } from 'src/category/category.entity';
 import { Location } from 'src/location/location.entity';
 import { Order } from 'src/order/order.entity';
 import { User } from 'src/user/user.entity';
@@ -46,8 +47,8 @@ export class Product {
   @Column()
   idLocation: number;
 
-  @Column()
-  idCategory: number;
+  @ManyToMany( () => Category, (category) => category.products)
+  categorias: Category[];
 
   @OneToMany(() => Location, (location) => location.locationProducto)
   location = Location;

@@ -42,9 +42,9 @@ export class ProductService {
     if (product) return this.ProductService.save(product);
   }
 
-  async getProductsByCategoryId(id: number) {
-    return this.ProductService.find({ where: { idCategory: id } });
-  }
+  // async getProductsByCategoryId(id: number) {
+  //   return this.ProductService.find({ where: { idCategory: id } });
+  // }
 
   async updateProduct(id: number, ProductUpdate: UpdateProductDto) {
     const productFound = await this.ProductService.findOne({ where: { id } });
