@@ -1,72 +1,67 @@
-import { Categoria } from "src/categoria/categoria.entity";
-import { Comentario } from "src/comentarios/comentario.entity";
-import { ImgEntity } from "src/imgs/img.entity";
-import { Location } from "src/locations/location.entity";
-import { Order } from "src/order/order.entity";
-import { User } from "src/user/user.entity";
-import { Column, Entity, ManyToMany, ManyToOne, OneToMany, OneToOne, PrimaryGeneratedColumn } from "typeorm";
-
-
+import { Categoria } from 'src/categoria/categoria.entity';
+import { Location } from 'src/locations/location.entity';
+import { Order } from 'src/order/order.entity';
+import { User } from 'src/user/user.entity';
+import {
+  Column,
+  Entity,
+  ManyToMany,
+  ManyToOne,
+  OneToMany,
+  OneToOne,
+  PrimaryGeneratedColumn,
+} from 'typeorm';
 
 @Entity()
-export class Product{
-    @PrimaryGeneratedColumn()
-    id: number
+export class Product {
+  @PrimaryGeneratedColumn()
+  id: number;
 
-    @Column()
-    name: string
+  @Column()
+  name: string;
 
-    @Column()
-    price: number
+  @Column()
+  price: number;
 
-    @Column()
-<<<<<<< HEAD
-    imgs: string
+  @Column()
+  imgs: string;
 
-    @Column()
-=======
->>>>>>> d75b9167e29835a93dd448b451f8f10eea7caf68
-    vendedorId: number
+  @Column()
+  vendedorId: number;
 
-    @Column({nullable: true})
-    marca: string
+  @Column({ nullable: true })
+  marca: string;
 
-    @Column({nullable: true})
-    descuento: number
+  @Column({ nullable: true })
+  descuento: number;
 
-    @Column()
-    status: string
+  @Column()
+  status: string;
 
-    @Column()
-    description: string
+  @Column()
+  description: string;
 
-    @Column()
-    stock: number
+  @Column()
+  stock: number;
 
-    @Column()
-    idLocation: number
+  @Column()
+  idLocation: number;
 
-    @Column()
-    idCategory: number
+  @Column()
+  idCategory: number;
 
-    @ManyToOne(()=> ImgEntity, img => img.productoImg)
-    imgs: ImgEntity[]
+  @OneToMany(() => Location, (location) => location.locationProducto)
+  location = Location;
 
-    @OneToMany(()=> Comentario, comentario => comentario.comentarioProducto)
-    comentarios: Comentario[]
+  @OneToMany(() => Categoria, (categoria) => categoria.productos)
+  categoria: Categoria;
 
-    @OneToMany(()=> Location, location => location.locationProducto)
-    location = Location
+  @OneToMany(() => User, (user) => user.publicaciones)
+  vendedor: User;
 
-    @OneToMany(()=>Categoria, categoria => categoria.productos)
-    categoria: Categoria
+  @ManyToMany(() => Order, (order) => order.products)
+  productsOrder: Order[];
 
-    @OneToMany(()=> User, user => user.publicaciones)
-    vendedor: User
-
-    @ManyToMany(()=> Order, order => order.products)
-    productsOrder: Order[]
-
-    @Column({ type: 'datetime', default: () => 'CURRENT_TIMESTAMP' })
-    createdAd: Date;
+  @Column({ type: 'datetime', default: () => 'CURRENT_TIMESTAMP' })
+  createdAd: Date;
 }

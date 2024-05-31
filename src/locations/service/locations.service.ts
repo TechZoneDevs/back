@@ -7,38 +7,42 @@ import { UpdateLocationDto } from '../dto/update-location.dto';
 
 @Injectable()
 export class LocationsService {
-    constructor(
-        @InjectRepository(Location) private locationService: Repository<Location>
-    ){}
+  constructor(
+    @InjectRepository(Location) private locationService: Repository<Location>,
+  ) {}
 
-    async findAll(){
-       const allLocations = await this.locationService.find()
-       if(!allLocations) return new HttpException('Locations no encontradas', HttpStatus.CONFLICT)
-       return allLocations
-    }
+  async findAll() {
+    const allLocations = await this.locationService.find();
+    if (!allLocations)
+      return new HttpException('Locations no encontradas', HttpStatus.CONFLICT);
+    return allLocations;
+  }
 
-    async findOne(id: number){
-        const locationFound = await this.locationService.findOne({where: {id}})
-        if(!locationFound) return new HttpException('Location no encontrado', HttpStatus.CONFLICT)
+  async findOne(id: number) {
+    const locationFound = await this.locationService.findOne({ where: { id } });
+    if (!locationFound)
+      return new HttpException('Location no encontrado', HttpStatus.CONFLICT);
 
-        return locationFound
-    }
+    return locationFound;
+  }
 
-    async createLocation(newLocation: CreateLocationDto){
-        const locationCreated = await this.locationService.create(newLocation)
+  async createLocation(newLocation: CreateLocationDto) {
+    const locationCreated = await this.locationService.create(newLocation);
 
-        if(locationCreated) return this.locationService.save(locationCreated)
-    }
+    if (locationCreated) return this.locationService.save(locationCreated);
+  }
 
-    async updateLocation(id: number, update: UpdateLocationDto ){
-        const locationFound = await this.locationService.findOne({where: {id}})
-        if(!locationFound) return new HttpException('Location no encontrado', HttpStatus.CONFLICT)
-        return this.locationService.update({id}, update)
-    }
+  async updateLocation(id: number, update: UpdateLocationDto) {
+    const locationFound = await this.locationService.findOne({ where: { id } });
+    if (!locationFound)
+      return new HttpException('Location no encontrado', HttpStatus.CONFLICT);
+    return this.locationService.update({ id }, update);
+  }
 
-    async deleteLocation(id: number){
-        const deletedLocation = await this.locationService.delete({id})
-        if(deletedLocation.affected === 0) return  new HttpException('Location no eliminado', HttpStatus.CONFLICT)
-        return deletedLocation
-    }
+  async deleteLocation(id: number) {
+    const deletedLocation = await this.locationService.delete({ id });
+    if (deletedLocation.affected === 0)
+      return new HttpException('Location no eliminado', HttpStatus.CONFLICT);
+    return deletedLocation;
+  }
 }
