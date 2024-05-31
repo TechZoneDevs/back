@@ -1,5 +1,4 @@
-import { Categoria } from 'src/categoria/categoria.entity';
-import { Location } from 'src/locations/location.entity';
+import { Location } from 'src/location/location.entity';
 import { Order } from 'src/order/order.entity';
 import { User } from 'src/user/user.entity';
 import {
@@ -52,9 +51,6 @@ export class Product {
 
   @OneToMany(() => Location, (location) => location.locationProducto)
   location = Location;
-
-  @OneToMany(() => Categoria, (categoria) => categoria.productos)
-  categoria: Categoria;
 
   @OneToMany(() => User, (user) => user.publicaciones)
   vendedor: User;

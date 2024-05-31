@@ -7,13 +7,13 @@ import {
   Patch,
   Post,
 } from '@nestjs/common';
-import { LocationsService } from '../service/locations.service';
+import { LocationService } from '../service/location.service';
 import { UpdateLocationDto } from '../dto/update-location.dto';
 import { CreateLocationDto } from '../dto/create-location.dto';
 
 @Controller('locations')
-export class LocationsController {
-  constructor(private locationService: LocationsService) {}
+export class LocationController {
+  constructor(private locationService: LocationService) {}
 
   @Get()
   findLocations() {

@@ -1,4 +1,4 @@
-import { Location } from 'src/locations/location.entity';
+import { Location } from 'src/location/location.entity';
 import { Order } from 'src/order/order.entity';
 import { Product } from 'src/product/product.entity';
 import {

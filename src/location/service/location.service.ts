@@ -6,7 +6,7 @@ import { CreateLocationDto } from '../dto/create-location.dto';
 import { UpdateLocationDto } from '../dto/update-location.dto';
 
 @Injectable()
-export class LocationsService {
+export class LocationService {
   constructor(
     @InjectRepository(Location) private locationService: Repository<Location>,
   ) {}
