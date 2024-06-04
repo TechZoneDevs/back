@@ -64,7 +64,16 @@ export class Product {
   // @ManyToOne(() => User, (user) => user.products, { nullable: true } )
   // vendedor: User;
 
-  @ManyToMany(() => Order, (order) => order.products, { nullable: true } )
+  @ManyToMany( () => Order, (order) => order.products, )
+  @JoinTable({
+    name: 'order_products',
+    joinColumn: {
+        name: 'orderId'
+    },
+    inverseJoinColumn: {
+        name: 'productsId'
+    }
+})
   productsOrder: Order[];
 
   @Column({ type: 'datetime', default: () => 'CURRENT_TIMESTAMP' })

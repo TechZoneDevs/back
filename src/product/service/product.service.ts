@@ -36,11 +36,14 @@ export class ProductService {
       return new HttpException('Ya existe un producto con ese nombre.', HttpStatus.CONFLICT);
     } else {
     console.log(newProduct);
-    const categoriasToAdd = newProduct.categoriesId;
-    const cateEncontradas = await this.CategoryService.findCategories(categoriasToAdd);
-    console.log(cateEncontradas);
-    let respone = <Category[]>cateEncontradas
-    newProduct.categories = respone;
+
+    if(newProduct.categoriesId){
+      const categoriasToAdd = newProduct.categoriesId;
+      const cateEncontradas = await this.CategoryService.findCategories(categoriasToAdd);
+      console.log(cateEncontradas);
+      let respose = <Category[]>cateEncontradas
+      newProduct.categories = respose;
+    } 
     return this.ProductService.save(newProduct);
     }
   }
