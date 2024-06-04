@@ -10,5 +10,6 @@ import { UserModule } from 'src/user/user.module';
   imports: [TypeOrmModule.forFeature([Location])],
   controllers: [LocationController],
   providers: [LocationService],
+  exports: [LocationService]
 })
 export class LocationModule {}

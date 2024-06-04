@@ -5,5 +5,5 @@ export class CreateUserDto {
   imgAvatar?: string;
   biografia?: string;
   status?: boolean;
-  idLocation: number;
+  locationId?: number;
 }

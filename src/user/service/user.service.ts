@@ -4,10 +4,14 @@ import { User } from '../user.entity';
 import { Repository } from 'typeorm';
 import { CreateUserDto } from '../dto/create-user.dto';
 import { UpdateUserDto } from '../dto/update-user.dto';
+import { LocationService } from 'src/location/service/location.service';
 
 @Injectable()
 export class UserService {
-  constructor(@InjectRepository(User) private userService: Repository<User>) {}
+  constructor(
+    @InjectRepository(User) private userService: Repository<User>,
+    private LocationService: LocationService
+) {}
 
   async findAll() {
     return this.userService.find({ relations: ["location"] });
@@ -24,11 +28,19 @@ export class UserService {
     const userFound = await this.userService.findOne({
       where: { name: newUser.email },
     });
-    if (userFound)
+    if (userFound){
       return new HttpException('user ya existente', HttpStatus.CONFLICT);
-    const userCreated = await this.userService.create(newUser);
-
-    if (userCreated) return this.userService.save(userCreated);
+    }
+    if(newUser.locationId){
+      const verifyLocation = await this.LocationService.findOne(newUser.locationId);
+      console.log(verifyLocation);
+      if(!verifyLocation){
+        console.log('entro aca.')
+        return new HttpException(`La location que intentas asignar al usuario no existe.`, 400);
+      }
+      const userCreated = this.userService.create(newUser);
+      if (userCreated) return this.userService.save(userCreated);
+    }
   }
 
   async updateUser(id: number, userUpdate: UpdateUserDto) {

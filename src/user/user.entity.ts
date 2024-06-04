@@ -34,7 +34,7 @@ export class User {
   status: boolean;
 
   @Column( { nullable: true })
-  idLocation: number;
+  locationId: number;
 
   @ManyToOne(() => Location, (location) => location.locationUser)
   location: Location;

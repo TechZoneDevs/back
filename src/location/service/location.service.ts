@@ -21,7 +21,7 @@ export class LocationService {
   async findOne(id: number) {
     const locationFound = await this.locationService.findOne({ where: { id } });
     if (!locationFound)
-      return new HttpException('Location no encontrado', HttpStatus.CONFLICT);
+      return null;
 
     return locationFound;
   }
