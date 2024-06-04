@@ -1,5 +1,6 @@
 import { UUID } from "crypto";
 import { Category } from "src/category/category.entity";
+import { Order } from "src/order/order.entity";
 
 export class CreateProductDto {
   name: string;
@@ -12,6 +13,8 @@ export class CreateProductDto {
   stock?: number;
   userId?: UUID;
   categories: Category[]
+  orders: []
   categoriesId: [];
   locationId?: number;
+  productsOrder: Order[]
 }

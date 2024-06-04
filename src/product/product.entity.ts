@@ -64,9 +64,6 @@ export class Product {
   @ManyToOne(() => Location, (location) => location.locationProducto, { nullable: true } )
   location = Location;
 
-  // @ManyToOne(() => User, (user) => user.products, { nullable: true } )
-  // vendedor: User;
-
   @ManyToMany( () => Order, (order) => order.products, )
   @JoinTable({
     name: 'order_products',

@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { HttpException, HttpStatus, Inject, Injectable, forwardRef } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Order } from '../order.entity';
 import { UserService } from 'src/user/service/user.service';
@@ -61,6 +61,15 @@ export class OrderService {
     await this.OrderService.save(createdOrder);
 
     return createdOrder;
+  }
+
+  async findOrderProductsById(orders: []){
+    const foundProducts = await this.OrderService.findByIds(orders);
+    if (!foundProducts){
+      return new HttpException('Categorias no encontrada.', HttpStatus.CONFLICT);
+    } else {
+      return foundProducts;
+    }
   }
 
   async findByUserId(userId: number) {

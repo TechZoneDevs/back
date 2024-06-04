@@ -1,4 +1,4 @@
-import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
+import { HttpException, HttpStatus, Inject, Injectable, forwardRef } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Product } from '../product.entity';
 import { Repository } from 'typeorm';
@@ -7,13 +7,16 @@ import { UpdateProductDto } from '../dto/update-product.dto';
 import { CategoryService } from 'src/category/category.service';
 import { LocationService } from 'src/location/service/location.service';
 import { Category } from 'src/category/category.entity';
+import { OrderService } from 'src/order/service/order.service';
+import { Order } from 'src/order/order.entity';
 
 @Injectable()
 export class ProductService {
   constructor(
     @InjectRepository(Product) private ProductService: Repository<Product>,
      private CategoryService: CategoryService,
-     private LocationService: LocationService
+     private LocationService: LocationService,
+     private OrderService: OrderService
   ) {}
 
   async findAll() {
@@ -52,8 +55,14 @@ export class ProductService {
       let respose = <Category[]>cateEncontradas
       newProduct.categories = respose;
     } 
+    if (newProduct.orders){
+      const ordersToAdd = newProduct.orders;
+      const ordersEncontradas = await this.OrderService.findOrderProductsById(ordersToAdd);
+      let respuesta = <Order[]>ordersEncontradas
+      newProduct.productsOrder = respuesta;
+    }
     return this.ProductService.save(newProduct);
-  
+
     }
   }
 

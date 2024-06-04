@@ -25,6 +25,5 @@ export class Order {
   user: User;
 
   @ManyToMany(() => Product, (product) => product.productsOrder)
-  //capaz tenemos que agregar un @JoinColumn
   products: Product[];
 }

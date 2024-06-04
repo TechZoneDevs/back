@@ -5,9 +5,10 @@ import { Order } from './order.entity';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { UserModule } from 'src/user/user.module';
 import { ProductModule } from 'src/product/product.module';
+import { forwardRef } from '@nestjs/common';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([Order]), UserModule, ProductModule],
+  imports: [TypeOrmModule.forFeature([Order]), UserModule,  ProductModule],
   controllers: [OrderController],
   providers: [OrderService],
   exports: [OrderService],
