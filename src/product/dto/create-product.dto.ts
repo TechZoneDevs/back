@@ -1,12 +1,16 @@
+import { UUID } from "crypto";
+import { Category } from "src/category/category.entity";
+
 export class CreateProductDto {
   name: string;
   price: number;
-  vendedorId: number;
-  marca: string;
-  status: string;
+  imgs?: string;  
+  marca?: string;
+  descuento?: number;
+  status?: string;
   description: string;
-  stock: number;
-  descuento: number;
-  idLocation: number;
-  idCategory: number;
+  stock?: number;
+  userId?: UUID;
+  categories: Category[]
+  categoriesId: []
 }

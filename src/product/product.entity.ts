@@ -2,10 +2,12 @@ import { Category } from 'src/category/category.entity';
 import { Location } from 'src/location/location.entity';
 import { Order } from 'src/order/order.entity';
 import { User } from 'src/user/user.entity';
+import { UUID } from 'crypto';
 import {
   Column,
   Entity,
   ManyToMany,
+  JoinTable,
   ManyToOne,
   OneToMany,
   OneToOne,
@@ -17,40 +19,52 @@ export class Product {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @Column()
+  @Column( { nullable: false, default: 'Default_Name' })
   name: string;
 
-  @Column()
+  @Column( { nullable: false, default: 321321 } )
   price: number;
 
   @Column( { nullable: true } )
   imgs: string;
 
-  @Column({ nullable: true })
+  @Column( { nullable: true } )
   marca: string;
 
-  @Column({ nullable: true })
+  @Column( { nullable: true } )
   descuento: number;
 
   @Column( { nullable: true } )
   status: string;
 
-  @Column( { nullable: true } )
+  @Column( { nullable: false, default: 'Default_Description' } )
   description: string;
 
   @Column( { nullable: true } )
   stock: number;
 
+  @Column( { nullable: true})
+  userId: UUID;
+
   @ManyToMany( () => Category, (category) => category.products)
-  categorias: Category[];
+  @JoinTable({
+    name: 'categories_products',
+    joinColumn: {
+        name: 'categoriesId'
+    },
+    inverseJoinColumn: {
+        name: 'productsId'
+    }
+})
+  categories: Category[];
 
-  @OneToMany(() => Location, (location) => location.locationProducto)
-  location = Location;
+  // @OneToMany(() => Location, (location) => location.locationProducto, { nullable: true } )
+  // location = Location;
 
-  @OneToMany(() => User, (user) => user.publicaciones)
-  vendedor: User;
+  // @ManyToOne(() => User, (user) => user.products, { nullable: true } )
+  // vendedor: User;
 
-  @ManyToMany(() => Order, (order) => order.products)
+  @ManyToMany(() => Order, (order) => order.products, { nullable: true } )
   productsOrder: Order[];
 
   @Column({ type: 'datetime', default: () => 'CURRENT_TIMESTAMP' })

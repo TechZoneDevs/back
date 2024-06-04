@@ -3,6 +3,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Category } from './category.entity';
 import { CreateCategoryDto } from './dto/CreateCategory.dto';
 import { UpdateCategoryDto } from './dto/UpdateCategory.dto';
+import { FindCategoriesDto } from './dto/FindCategories.dto';
 import { Repository } from 'typeorm';
 
 @Injectable()
@@ -47,6 +48,15 @@ export class CategoryService {
             return await this.categoryService.delete({id});
         } else {
             return new HttpException('Categoria no encontrada.', HttpStatus.CONFLICT);
+        }
+    };
+
+    async findCategories( cates: []){
+        const foundCategories = await this.categoryService.findByIds(cates);
+        if (!foundCategories) {
+            return new HttpException('Categorias no encontrada.', HttpStatus.CONFLICT);
+        } else {
+            return foundCategories
         }
     };
 };

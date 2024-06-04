@@ -4,6 +4,7 @@ import { Product } from 'src/product/product.entity';
 import {
   Column,
   Entity,
+  JoinColumn,
   ManyToOne,
   OneToMany,
   PrimaryGeneratedColumn,
@@ -38,8 +39,8 @@ export class User {
   @OneToMany(() => Order, (order) => order.user)
   userOrder: Order[];
 
-  @ManyToOne(() => Product, (product) => product.vendedor)
-  publicaciones: Product[];
+  // @OneToMany(() => Product, (product) => product.vendedor)
+  // products: Product[];
 
   @OneToMany(() => Location, (location) => location.locationUser)
   location: Location;

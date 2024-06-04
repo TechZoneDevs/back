@@ -44,6 +44,6 @@ import { CategoryModule } from './category/category.module';
 })
 export class AppModule implements OnModuleInit{
   onModuleInit() {
-    console.log(`Database connected successfully and server is listening in ${PORT}!.`);
+    console.log(`Database connected successfully and server is listening in ${PORT}!`);
   }
 };

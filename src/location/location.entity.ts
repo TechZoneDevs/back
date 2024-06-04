@@ -13,8 +13,8 @@ export class Location {
   @Column()
   localidad: string;
 
-  @ManyToOne(() => Product, (product) => product.location)
-  locationProducto: Product[];
+  // @ManyToOne(() => Product, (product) => product.location)
+  // locationProducto: Product[];
 
   @ManyToOne(() => User, (user) => user.location)
   locationUser: User[];

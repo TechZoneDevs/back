@@ -4,15 +4,20 @@ import { Product } from '../product.entity';
 import { Repository } from 'typeorm';
 import { CreateProductDto } from '../dto/create-product.dto';
 import { UpdateProductDto } from '../dto/update-product.dto';
+import { CategoryService } from 'src/category/category.service';
+import { Category } from 'src/category/category.entity';
 
 @Injectable()
 export class ProductService {
   constructor(
     @InjectRepository(Product) private ProductService: Repository<Product>,
+     private CategoryService: CategoryService,
   ) {}
 
   async findAll() {
-    return this.ProductService.find();
+    return this.ProductService.find({
+      relations: ['categories']
+    });
   }
 
   async findOne(id: number) {
@@ -27,19 +32,17 @@ export class ProductService {
     const productFound = await this.ProductService.findOne({
       where: { name: newProduct.name },
     });
-    if (productFound)
+    if (productFound){
       return new HttpException('Ya existe un producto con ese nombre.', HttpStatus.CONFLICT);
-    const product = await this.ProductService.create(newProduct);
-
-    if (
-      newProduct.descuento &&
-      newProduct.descuento > 0 &&
-      newProduct.descuento < 100
-    ) {
-      product.price -= product.price * (newProduct.descuento / 100);
+    } else {
+    console.log(newProduct);
+    const categoriasToAdd = newProduct.categoriesId;
+    const cateEncontradas = await this.CategoryService.findCategories(categoriasToAdd);
+    console.log(cateEncontradas);
+    let respone = <Category[]>cateEncontradas
+    newProduct.categories = respone;
+    return this.ProductService.save(newProduct);
     }
-
-    if (product) return this.ProductService.save(product);
   }
 
   // async getProductsByCategoryId(id: number) {
@@ -48,18 +51,11 @@ export class ProductService {
 
   async updateProduct(id: number, ProductUpdate: UpdateProductDto) {
     const productFound = await this.ProductService.findOne({ where: { id } });
-    if (!productFound)
+    if (!productFound){
       return new HttpException('Product no encontrado', HttpStatus.CONFLICT);
-    if (
-      ProductUpdate.descuento &&
-      ProductUpdate.descuento > 0 &&
-      ProductUpdate.descuento < 100
-    ) {
-      ProductUpdate.price -=
-        ProductUpdate.price * (ProductUpdate.descuento / 100);
+    } else {
+      return this.ProductService.update({ id }, ProductUpdate);
     }
-
-    return this.ProductService.update({ id }, ProductUpdate);
   }
 
   async deleteProduct(id: number) {
