@@ -5,6 +5,7 @@ import { Repository } from 'typeorm';
 import { CreateProductDto } from '../dto/create-product.dto';
 import { UpdateProductDto } from '../dto/update-product.dto';
 import { CategoryService } from 'src/category/category.service';
+import { LocationService } from 'src/location/service/location.service';
 import { Category } from 'src/category/category.entity';
 
 @Injectable()
@@ -12,16 +13,17 @@ export class ProductService {
   constructor(
     @InjectRepository(Product) private ProductService: Repository<Product>,
      private CategoryService: CategoryService,
+     private LocationService: LocationService
   ) {}
 
   async findAll() {
     return this.ProductService.find({
-      relations: ['categories']
+      relations: ['categories', 'location']
     });
   }
 
   async findOne(id: number) {
-    const productFound = await this.ProductService.findOne({ where: { id } });
+    const productFound = await this.ProductService.findOne({ where: { id }, relations: ['categories', 'location'] });
     if (!productFound)
       return new HttpException('Product no encontrado', HttpStatus.CONFLICT);
 
@@ -35,8 +37,14 @@ export class ProductService {
     if (productFound){
       return new HttpException('Ya existe un producto con ese nombre.', HttpStatus.CONFLICT);
     } else {
-    console.log(newProduct);
-
+    if (newProduct.locationId){
+      const verifyLocation = await this.LocationService.findOne(newProduct.locationId);
+      console.log(verifyLocation);
+      if(!verifyLocation){
+        console.log(verifyLocation);
+        return new HttpException(`La location donde intentas crear el producto no existe.`, 400);
+      }
+    } 
     if(newProduct.categoriesId){
       const categoriasToAdd = newProduct.categoriesId;
       const cateEncontradas = await this.CategoryService.findCategories(categoriasToAdd);
@@ -45,6 +53,7 @@ export class ProductService {
       newProduct.categories = respose;
     } 
     return this.ProductService.save(newProduct);
+  
     }
   }
 

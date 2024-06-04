@@ -58,8 +58,11 @@ export class Product {
 })
   categories: Category[];
 
-  // @OneToMany(() => Location, (location) => location.locationProducto, { nullable: true } )
-  // location = Location;
+  @Column( { nullable: true } )
+  locationId: number;
+
+  @ManyToOne(() => Location, (location) => location.locationProducto, { nullable: true } )
+  location = Location;
 
   // @ManyToOne(() => User, (user) => user.products, { nullable: true } )
   // vendedor: User;

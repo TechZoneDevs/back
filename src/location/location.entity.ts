@@ -7,14 +7,14 @@ export class Location {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @Column()
+  @Column( { default: "Default_City"} )
   city: string;
 
-  @Column()
+  @Column( { default: "Default_Locality"} )
   localidad: string;
 
-  // @ManyToOne(() => Product, (product) => product.location)
-  // locationProducto: Product[];
+  @OneToMany(() => Product, (product) => product.location)
+  locationProducto: Product[];
 
   @OneToMany(() => User, (user) => user.location)
   locationUser: User[];

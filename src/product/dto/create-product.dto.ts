@@ -12,5 +12,6 @@ export class CreateProductDto {
   stock?: number;
   userId?: UUID;
   categories: Category[]
-  categoriesId: []
+  categoriesId: [];
+  locationId?: number;
 }
