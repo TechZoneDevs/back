@@ -8,7 +8,7 @@ import { LocationModule } from 'src/location/location.module';
 import { ProductModule } from 'src/product/product.module';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([User])],
+  imports: [TypeOrmModule.forFeature([User]), LocationModule],
   controllers: [UserController],
   providers: [UserService],
   exports: [UserService],

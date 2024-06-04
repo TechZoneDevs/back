@@ -10,14 +10,13 @@ export class UserService {
   constructor(@InjectRepository(User) private userService: Repository<User>) {}
 
   async findAll() {
-    return this.userService.find();
+    return this.userService.find({ relations: ["location"] });
   }
 
   async findOne(id: number) {
-    const userFound = await this.userService.findOne({ where: { id } });
+    const userFound = await this.userService.findOne({ where: { id }, relations: ["location"] });
     if (!userFound)
       return new HttpException('user no encontrado', HttpStatus.CONFLICT);
-
     return userFound;
   }
 

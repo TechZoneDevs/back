@@ -1,6 +1,6 @@
 import { Product } from 'src/product/product.entity';
 import { User } from 'src/user/user.entity';
-import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
+import { Column, Entity, ManyToOne, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
 
 @Entity()
 export class Location {
@@ -16,6 +16,6 @@ export class Location {
   // @ManyToOne(() => Product, (product) => product.location)
   // locationProducto: Product[];
 
-  @ManyToOne(() => User, (user) => user.location)
+  @OneToMany(() => User, (user) => user.location)
   locationUser: User[];
 }

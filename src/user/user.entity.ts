@@ -18,7 +18,7 @@ export class User {
   @Column( { nullable: true } )
   name: string;
 
-  @Column()
+  @Column( { unique: true } )
   email: string;
 
   @Column()
@@ -36,14 +36,14 @@ export class User {
   @Column( { nullable: true })
   idLocation: number;
 
+  @ManyToOne(() => Location, (location) => location.locationUser)
+  location: Location;
+
   @OneToMany(() => Order, (order) => order.user)
   userOrder: Order[];
 
   // @OneToMany(() => Product, (product) => product.vendedor)
   // products: Product[];
-
-  @OneToMany(() => Location, (location) => location.locationUser)
-  location: Location;
 
   @Column({ type: 'datetime', default: () => 'CURRENT_TIMESTAMP' })
   createdAd: Date;
