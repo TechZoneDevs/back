@@ -14,4 +14,7 @@ export class Payment {
 
   @OneToOne(() => Order, (order) => order.pago)
   payment: Order;
+
+  @Column({ type: 'datetime', default: () => 'CURRENT_TIMESTAMP' })
+  createdAd: Date;
 }

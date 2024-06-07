@@ -10,6 +10,7 @@ import { PaymentModule } from './payment/payment.module';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { PORT } from './main';
 import { CategoryModule } from './category/category.module';
+import { BrandModule } from './brand/brand.module';
 
 @Module({
   imports: [
@@ -38,6 +39,7 @@ import { CategoryModule } from './category/category.module';
     UserModule,
     ProductModule,
     OrderModule,
+    BrandModule,
   ],
   controllers: [AppController],
   providers: [AppService],
