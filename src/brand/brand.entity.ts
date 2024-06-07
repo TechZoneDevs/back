@@ -1,4 +1,5 @@
-import { Column, Entity, OneToOne, PrimaryGeneratedColumn } from 'typeorm';
+import { Column, Entity, ManyToMany, OneToMany, OneToOne, PrimaryGeneratedColumn } from 'typeorm';
+import { Product } from 'src/product/product.entity';
 
 @Entity()
 
@@ -11,5 +12,8 @@ export class Brand {
 
     @Column({ type: 'datetime', default: () => 'CURRENT_TIMESTAMP' })
     createdAd: Date;
+
+    @OneToMany( () => Product, (product) => product.brand)
+    products: Product[];
     
 }

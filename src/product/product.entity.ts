@@ -13,6 +13,7 @@ import {
   OneToOne,
   PrimaryGeneratedColumn,
 } from 'typeorm';
+import { Brand } from 'src/brand/brand.entity';
 
 @Entity()
 export class Product {
@@ -63,6 +64,12 @@ export class Product {
 
   @ManyToOne(() => Location, (location) => location.locationProducto, { nullable: true } )
   location = Location;
+
+  @Column({ nullable: true})
+  brandId: number
+
+  @ManyToOne( () => Brand, (brand) => brand.products)
+  brand: Brand;
 
   @ManyToMany( () => Order, (order) => order.products, )
   @JoinTable({

@@ -15,7 +15,7 @@ export class ProductService {
   constructor(
     @InjectRepository(Product) private ProductService: Repository<Product>,
     @Inject (forwardRef(() => OrderService))
-     private readonly CategoryService: CategoryService,
+     private CategoryService: CategoryService,
      private readonly LocationService: LocationService,
      private readonly OrderService: OrderService
   ) {}
@@ -43,12 +43,11 @@ export class ProductService {
     } else {
     if (newProduct.locationId){
       const verifyLocation = await this.LocationService.findOne(newProduct.locationId);
-      console.log(verifyLocation);
       if(!verifyLocation){
-        console.log(verifyLocation);
         return new HttpException(`La location donde intentas crear el producto no existe.`, 400);
       }
     }
+    console.log(newProduct.categoriesId);
     if(newProduct.categoriesId){
       const categoriasToAdd = newProduct.categoriesId;
       const cateEncontradas = await this.CategoryService.findCategories(categoriasToAdd);
