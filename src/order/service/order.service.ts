@@ -18,11 +18,12 @@ export class OrderService {
   ) {}
 
   async createOrder(OrderDto: CreateOrderDto) {
-    const userId = OrderDto.userId || OrderDto.user.id;
+    //Find User
+    const userId = OrderDto.userId;
     const userFound = await this.userService.findOne(userId);
 
     if (!(userFound instanceof User)) {
-      throw new Error('Usuario no encontrado');
+      return new HttpException('Usuario no encontrado.', HttpStatus.CONFLICT);
     }
 
     const productIds = Array.isArray(OrderDto.productId)
@@ -50,7 +51,7 @@ export class OrderService {
     );
 
     if (validProductsFound.length !== productIds.length) {
-      throw new Error('Al menos uno de los productos no fue encontrado');
+      return new HttpException('Uno o algunos de los productos no fueron encontrados.', HttpStatus.CONFLICT);
     }
 
     const OrderPartial: DeepPartial<Order> = {
