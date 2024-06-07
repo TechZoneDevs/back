@@ -14,9 +14,10 @@ import { Order } from 'src/order/order.entity';
 export class ProductService {
   constructor(
     @InjectRepository(Product) private ProductService: Repository<Product>,
-     private CategoryService: CategoryService,
-     private LocationService: LocationService,
-     private OrderService: OrderService
+    @Inject (forwardRef(() => OrderService))
+     private readonly CategoryService: CategoryService,
+     private readonly LocationService: LocationService,
+     private readonly OrderService: OrderService
   ) {}
 
   async findAll() {
@@ -47,14 +48,14 @@ export class ProductService {
         console.log(verifyLocation);
         return new HttpException(`La location donde intentas crear el producto no existe.`, 400);
       }
-    } 
+    }
     if(newProduct.categoriesId){
       const categoriasToAdd = newProduct.categoriesId;
       const cateEncontradas = await this.CategoryService.findCategories(categoriasToAdd);
       console.log(cateEncontradas);
       let respose = <Category[]>cateEncontradas
       newProduct.categories = respose;
-    } 
+    }
     if (newProduct.orders){
       const ordersToAdd = newProduct.orders;
       const ordersEncontradas = await this.OrderService.findOrderProductsById(ordersToAdd);

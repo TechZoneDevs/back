@@ -12,8 +12,9 @@ import { CreateOrderDto } from '../dto/create-order.dto';
 export class OrderService {
   constructor(
     @InjectRepository(Order) private OrderService: Repository<Order>,
-    private userService: UserService,
-    private productService: ProductService,
+    @Inject(forwardRef(() => ProductService))
+    private readonly productService: ProductService,
+    private readonly userService: UserService,
   ) {}
 
   async createOrder(OrderDto: CreateOrderDto) {
