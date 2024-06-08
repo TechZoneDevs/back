@@ -13,21 +13,22 @@ import { Order } from 'src/order/order.entity';
 @Injectable()
 export class ProductService {
   constructor(
+   
     @InjectRepository(Product) private ProductService: Repository<Product>,
-    @Inject (forwardRef(() => OrderService))
-     private CategoryService: CategoryService,
      private readonly LocationService: LocationService,
-     private readonly OrderService: OrderService
+     private readonly CategoryService: CategoryService,
+     @Inject (forwardRef(() => OrderService))
+     private readonly OrderService: OrderService,
   ) {}
 
   async findAll() {
     return this.ProductService.find({
-      relations: ['categories', 'location']
+      relations: ['categories', 'location', ]
     });
   }
 
   async findOne(id: number) {
-    const productFound = await this.ProductService.findOne({ where: { id }, relations: ['categories', 'location'] });
+    const productFound = await this.ProductService.findOne({ where: { id }, relations: ['categories', 'location', 'brand'] });
     if (!productFound)
       return new HttpException('Product no encontrado', HttpStatus.CONFLICT);
 
@@ -48,19 +49,22 @@ export class ProductService {
       }
     }
     console.log(newProduct.categoriesId);
-    if(newProduct.categoriesId){
-      const categoriasToAdd = newProduct.categoriesId;
-      const cateEncontradas = await this.CategoryService.findCategories(categoriasToAdd);
-      console.log(cateEncontradas);
-      let respose = <Category[]>cateEncontradas
-      newProduct.categories = respose;
-    }
-    if (newProduct.orders){
-      const ordersToAdd = newProduct.orders;
+    if (newProduct.ordersId){
+      const ordersToAdd = newProduct.ordersId;
       const ordersEncontradas = await this.OrderService.findOrderProductsById(ordersToAdd);
       let respuesta = <Order[]>ordersEncontradas
       newProduct.productsOrder = respuesta;
     }
+
+    if(newProduct.categoriesId){
+      const categoriasToAdd = newProduct.categoriesId;
+      console.log('llega aca')
+      const cateEncontradas = await this.CategoryService.encuentraCategorias(categoriasToAdd);
+      console.log(cateEncontradas);
+      let respose = <Category[]>cateEncontradas
+      newProduct.categories = respose;
+    }
+
     return this.ProductService.save(newProduct);
 
     }

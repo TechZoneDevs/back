@@ -11,11 +11,11 @@ export class CreateProductDto {
   status?: string;
   description: string;
   stock?: number;
-  userId?: UUID;
+  // userId?: UUID;
+  locationId?: number;
   brandId?: number;
   categories: Category[]
-  orders: []
+  ordersId: []
   categoriesId: [];
-  locationId?: number;
   productsOrder: Order[]
 }

@@ -44,8 +44,8 @@ export class Product {
   @Column( { nullable: true } )
   stock: number;
 
-  @Column( { nullable: true})
-  userId: UUID;
+  // @Column( { nullable: true})
+  // userId: UUID;
 
   @ManyToMany( () => Category, (category) => category.products)
   @JoinTable({

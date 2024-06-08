@@ -24,7 +24,7 @@ export class BrandService {
     }
 
     async findBrand(id: number){
-        const findBrand = await this.brandService.findOne({ where: { id }});
+        const findBrand = await this.brandService.findOne({ where: { id }, relations: ['products']});
         if(findBrand){
             return findBrand;
         } else {
@@ -33,7 +33,7 @@ export class BrandService {
     }
 
     async findAllBrands(){
-        return this.brandService.find();
+        return this.brandService.find( { relations: ['products'] } );
     }
 
     async updateBrand(id: number, updatedBrand: UpdateBrandDto){
