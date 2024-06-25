@@ -24,7 +24,7 @@ export class Order {
   @Column( { nullable: true})
   userId: number;
 
-  @ManyToOne(() => User, (user) => user.userOrder)
+  @ManyToOne(() => User, (user) => user.orders)
   user: User;
 
   @ManyToMany(() => Product, (product) => product.orders)

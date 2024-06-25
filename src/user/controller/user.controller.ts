@@ -10,6 +10,7 @@ import {
 import { UserService } from '../service/user.service';
 import { CreateUserDto } from '../dto/create-user.dto';
 import { UpdateUserDto } from '../dto/update-user.dto';
+import { loginUser } from '../dto/login-user.dto';
 
 @Controller('user')
 export class UserController {
@@ -19,6 +20,11 @@ export class UserController {
   findUsers() {
     return this.userService.findAll();
   }
+
+  @Post('authUser')
+  login(@Body() user: loginUser){
+    return this.userService.login(user);
+  };
 
   @Post()
   createUser(@Body() newUser: CreateUserDto) {

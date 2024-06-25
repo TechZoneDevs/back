@@ -40,7 +40,7 @@ export class User {
   location: Location;
 
   @OneToMany(() => Order, (order) => order.user)
-  userOrder: Order[];
+  orders: Order[];
 
   @OneToMany(() => Product, (product) => product.user)
   products: Product[];

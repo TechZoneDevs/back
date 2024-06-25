@@ -86,11 +86,11 @@ export class OrderService {
 
   async findById(id: number) {
     const foundOrdersByUserId = this.OrderService.findOne({ where: { id }, relations: ['user', 'products'] });
-    if (foundOrdersByUserId) {
+    // if (foundOrdersByUserId) {
       return foundOrdersByUserId;
-    } else {
-      return new HttpException('No fue encontrada ninguna orden con este Order ID.', HttpStatus.CONFLICT);
-    };
+    // } else {
+    //   return new HttpException('No fue encontrada ninguna orden con este Order ID.', HttpStatus.CONFLICT);
+    // };
   };
 
   async findAll() {
