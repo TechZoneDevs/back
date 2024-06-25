@@ -11,9 +11,9 @@ export class OrderController {
     return this.OrderService.createOrder(userCarrito);
   }
 
-  @Get(':userId')
-  getUserCarrito(@Param('userId') userId: string) {
-    return this.OrderService.findByUserId(+userId);
+  @Get('findByUserId/:userId')
+  getUserCarrito(@Param('userId') userId: number) {
+    return this.OrderService.findByUserId(userId);
   }
 
   @Get()
@@ -22,7 +22,7 @@ export class OrderController {
   }
 
   @Get(':id')
-  getOrderById(@Param('id') id: string) {
-    return this.OrderService.findById(+id);
+  getOrderById(@Param('id') id: number) {
+    return this.OrderService.findById(id);
   }
 }

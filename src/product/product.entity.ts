@@ -44,20 +44,11 @@ export class Product {
   @Column( { nullable: true } )
   stock: number;
 
-  // @Column( { nullable: true})
-  // userId: UUID;
+  @Column( { nullable: true})
+  userId: number;
 
-  @ManyToMany( () => Category, (category) => category.products)
-  @JoinTable({
-    name: 'categories_products',
-    joinColumn: {
-        name: 'categoriesId'
-    },
-    inverseJoinColumn: {
-        name: 'productsId'
-    }
-})
-  categories: Category[];
+  @OneToMany(() => User, (user) => user.userOrder)
+  vendedor: User
 
   @Column( { nullable: true } )
   locationId: number;
@@ -71,6 +62,18 @@ export class Product {
   @ManyToOne( () => Brand, (brand) => brand.products)
   brand: Brand;
 
+  @ManyToMany( () => Category, (category) => category.products)
+  @JoinTable({
+    name: 'categories_products',
+    joinColumn: {
+        name: 'categoriesId'
+    },
+    inverseJoinColumn: {
+        name: 'productsId'
+    }
+})
+  categories: Category[];
+
   @ManyToMany( () => Order, (order) => order.products, )
   @JoinTable({
     name: 'order_products',
@@ -81,7 +84,7 @@ export class Product {
         name: 'productsId'
     }
 })
-  productsOrder: Order[];
+  orders: Order[];
 
   @Column({ type: 'datetime', default: () => 'CURRENT_TIMESTAMP' })
   createdAd: Date;

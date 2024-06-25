@@ -5,17 +5,17 @@ import { Order } from "src/order/order.entity";
 export class CreateProductDto {
   name: string;
   price: number;
-  imgs?: string;  
+  imgs?: string;
   marca?: string;
   descuento?: number;
   status?: string;
   description: string;
   stock?: number;
-  // userId?: UUID;
+  userId?: number;
   locationId?: number;
   brandId?: number;
-  categories: Category[]
   ordersId: []
   categoriesId: [];
-  productsOrder: Order[]
+  categories: Category[]
+  orders: Order[]
 }

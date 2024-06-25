@@ -82,7 +82,7 @@ export class OrderService {
   }
 
   async findById(id: number) {
-    return await this.OrderService.findOne({ where: { id } });
+    return await this.OrderService.findOne({ where: { id }, relations: ['user', 'products'] });
   }
 
   async findAll() {

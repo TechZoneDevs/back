@@ -10,7 +10,7 @@ import { OrderModule } from 'src/order/order.module';
 import { forwardRef } from '@nestjs/common';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([Product]), forwardRef(() => OrderModule), forwardRef(() => CategoryModule), LocationModule],
+  imports: [TypeOrmModule.forFeature([Product]), forwardRef(() => OrderModule), forwardRef(() => CategoryModule), LocationModule, UserModule],
   controllers: [ProductController],
   providers: [ProductService],
   exports: [ProductService],

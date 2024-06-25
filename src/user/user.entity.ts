@@ -42,8 +42,8 @@ export class User {
   @OneToMany(() => Order, (order) => order.user)
   userOrder: Order[];
 
-  // @OneToMany(() => Product, (product) => product.vendedor)
-  // products: Product[];
+  @ManyToOne(() => Product, (product) => product.vendedor)
+  products: Product[];
 
   @Column({ type: 'datetime', default: () => 'CURRENT_TIMESTAMP' })
   createdAd: Date;
