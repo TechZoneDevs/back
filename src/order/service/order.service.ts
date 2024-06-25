@@ -75,17 +75,30 @@ export class OrderService {
   }
 
   async findByUserId(userId: number) {
-    return await this.OrderService.find({
-      relations: ['user', 'products'],
-      where: { user: { id: userId } },
-    });
-  }
+    const foundOrdersByUserId = await this.OrderService.find({ relations: ['user', 'products'],
+      where: { user: { id: userId } }});
+    if (foundOrdersByUserId) {
+      return foundOrdersByUserId;
+    } else {
+      return new HttpException('No fue encontrada ninguna orden con este User ID.', HttpStatus.CONFLICT);
+    };
+  };
 
   async findById(id: number) {
-    return await this.OrderService.findOne({ where: { id }, relations: ['user', 'products'] });
-  }
+    const foundOrdersByUserId = this.OrderService.findOne({ where: { id }, relations: ['user', 'products'] });
+    if (foundOrdersByUserId) {
+      return foundOrdersByUserId;
+    } else {
+      return new HttpException('No fue encontrada ninguna orden con este Order ID.', HttpStatus.CONFLICT);
+    };
+  };
 
   async findAll() {
-    return await this.OrderService.find({ relations: ['user', 'products'] });
-  }
-}
+    const allOrders =  await this.OrderService.find({ relations: ['user', 'products'] });
+    if (allOrders.length == 0) {
+      return new HttpException('No existen ordenes registradas.', HttpStatus.CONFLICT);
+    } else {
+      return allOrders;
+    }
+  };
+};

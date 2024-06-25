@@ -25,12 +25,12 @@ export class ProductService {
 
   async findAll() {
     return this.ProductService.find({
-      relations: ['location']
+      relations: ['location', 'user']
     });
   }
 
   async findOne(id: number) {
-    const productFound = await this.ProductService.findOne({ where: { id }, relations: ['categories', 'location', 'brand',"orders"] });
+    const productFound = await this.ProductService.findOne({ where: { id }, relations: ['categories', 'location', 'brand','orders', 'user'] });
     if (!productFound)
       return new HttpException('Product no encontrado', HttpStatus.CONFLICT);
 

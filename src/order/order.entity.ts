@@ -21,6 +21,9 @@ export class Order {
   @OneToOne(() => Payment, (payment) => payment.payment)
   pago: Payment;
 
+  @Column( { nullable: true})
+  userId: number;
+
   @ManyToOne(() => User, (user) => user.userOrder)
   user: User;
 

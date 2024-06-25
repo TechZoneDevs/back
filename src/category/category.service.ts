@@ -52,9 +52,7 @@ export class CategoryService {
     };
 
     async encuentraCategorias(cates: []){
-        console.log('123', cates);
         const foundCategories = await this.categoryService.findByIds(cates);
-        console.log(foundCategories);
         if (!foundCategories) {
             return new HttpException('Categorias no encontrada.', 400);
         } else {

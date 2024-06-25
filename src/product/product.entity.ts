@@ -30,9 +30,6 @@ export class Product {
   imgs: string;
 
   @Column( { nullable: true } )
-  marca: string;
-
-  @Column( { nullable: true } )
   descuento: number;
 
   @Column( { nullable: true } )
@@ -47,8 +44,8 @@ export class Product {
   @Column( { nullable: true})
   userId: number;
 
-  @OneToMany(() => User, (user) => user.userOrder)
-  vendedor: User
+  @ManyToOne(() => User, (user) => user.products)
+  user: User;
 
   @Column( { nullable: true } )
   locationId: number;

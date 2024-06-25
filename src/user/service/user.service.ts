@@ -33,9 +33,7 @@ export class UserService {
     }
     if(newUser.locationId){
       const verifyLocation = await this.LocationService.findOne(newUser.locationId);
-      console.log(verifyLocation);
       if(!verifyLocation){
-        console.log('entro aca.')
         return new HttpException(`La location que intentas asignar al usuario no existe.`, 400);
       }
       const userCreated = this.userService.create(newUser);

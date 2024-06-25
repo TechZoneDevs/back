@@ -42,7 +42,7 @@ export class User {
   @OneToMany(() => Order, (order) => order.user)
   userOrder: Order[];
 
-  @ManyToOne(() => Product, (product) => product.vendedor)
+  @OneToMany(() => Product, (product) => product.user)
   products: Product[];
 
   @Column({ type: 'datetime', default: () => 'CURRENT_TIMESTAMP' })
